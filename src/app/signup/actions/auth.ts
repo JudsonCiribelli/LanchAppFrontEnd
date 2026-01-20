@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { SignUpSchema } from "../schemas/schema";
 import { apiClient } from "@/lib/api";
+import { CreateUserType } from "../types/CreateUser";
 
 export type FormState = {
   success: boolean;
@@ -36,7 +37,7 @@ export async function signUpAction(
       phone: validatedFields.data.phone,
     };
 
-    await apiClient("/user", {
+    await apiClient<CreateUserType>("/user", {
       method: "POST",
       body: JSON.stringify(data),
     });
