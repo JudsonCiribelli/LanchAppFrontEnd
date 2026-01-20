@@ -155,10 +155,10 @@ const FormSignUp = () => {
               {form.formState.isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Entrando...
+                  Validando...
                 </>
               ) : (
-                "Entrar"
+                "Criar conta"
               )}
             </Button>
 
