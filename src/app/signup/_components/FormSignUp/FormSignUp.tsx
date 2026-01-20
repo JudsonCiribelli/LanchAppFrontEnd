@@ -1,5 +1,5 @@
 "use client";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -18,33 +18,31 @@ import {
 import { Input } from "@/_components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import { Button } from "@/_components/ui/button";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-
-const schema = z.object({
-  name: z.string().nonempty({ message: "Nome é obrigatório" }),
-  email: z.email().nonempty({ message: "Email é obrigatório" }),
-  password: z.string().nonempty({ message: "Senha é obrigatória" }),
-  phone: z
-    .string()
-    .transform((val) => val.replace(/\D/g, ""))
-    .refine((val) => val.length === 11, {
-      message: "O número de telefone deve ter 11 dígitos. (DDD + 9xxxx-xxxx).",
-    })
-    .refine((val) => /^[1-9]{2}9[0-9]{8}$/.test(val), {
-      message: "Número de telefone inválido.",
-    }),
-});
-
-type FormData = z.infer<typeof schema>;
+import { signUpAction } from "../../actions/auth";
+import { SignUpSchema, SignUpSchemaType } from "../../schemas/schema";
+import { useRouter } from "next/navigation";
 
 const FormSignUp = () => {
-  const form = useForm<FormData>({
-    resolver: zodResolver(schema),
-    mode: "onChange",
+  const router = useRouter();
+  const [state, action, isPending] = useActionState(signUpAction, {
+    success: false,
+    message: null,
   });
+
+  const form = useForm<SignUpSchemaType>({
+    resolver: zodResolver(SignUpSchema),
+    defaultValues: { name: "", email: "", password: "", phone: "" },
+  });
+
+  useEffect(() => {
+    if (state.success && state.redirectTo) {
+      form.reset();
+      router.replace(state.redirectTo);
+    }
+  }, [state, form, router]);
 
   const formatPhone = (value: string) => {
     if (!value) return "";
@@ -70,7 +68,7 @@ const FormSignUp = () => {
 
       <CardContent>
         <Form {...form}>
-          <form className="space-y-5">
+          <form className="space-y-5" action={action}>
             <FormField
               control={form.control}
               name="name"
