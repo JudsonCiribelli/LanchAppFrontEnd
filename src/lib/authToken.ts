@@ -1,4 +1,6 @@
 import { cookies } from "next/headers";
+import { apiClient } from "./api";
+import { UserTypes } from "@/types/user";
 
 const cookieName = "user_token";
 
@@ -21,4 +23,22 @@ export async function setToken(token: string) {
 export async function deleteToken() {
   const cookieStore = await cookies();
   cookieStore.delete(cookieName);
+}
+
+export async function getUser(): Promise<UserTypes | null> {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      return null;
+    }
+
+    const user = await apiClient<UserTypes>("/user", {
+      token: token,
+    });
+
+    return user;
+  } catch (error) {
+    return null;
+  }
 }
