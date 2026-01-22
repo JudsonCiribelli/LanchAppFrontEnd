@@ -1,5 +1,10 @@
-import { LogIn, Menu } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { UserTypes } from "@/types/user";
+import Link from "next/link";
 import { Button } from "../ui/button";
+import CardComponent from "../CardComponent/CardComponent";
 import {
   Sheet,
   SheetContent,
@@ -7,16 +12,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { getUser } from "@/lib/authToken";
-import Link from "next/link";
-import CardComponent from "../CardComponent/CardComponent";
+import { LogIn, Menu } from "lucide-react";
 
-const SheetComponent = async () => {
-  const user = await getUser();
+interface SheetsProps {
+  user: UserTypes;
+}
 
-  if (!user) return null;
+const SheetComponent = ({ user }: SheetsProps) => {
+  const [isSheetsOpen, setIsSheetsOpen] = useState(false);
+
   return (
-    <Sheet>
+    <Sheet open={isSheetsOpen} onOpenChange={setIsSheetsOpen}>
       <SheetTrigger asChild>
         <Button>
           <Menu />
