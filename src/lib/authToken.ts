@@ -1,3 +1,4 @@
+"use server";
 import { cookies } from "next/headers";
 import { apiClient } from "./api";
 import { UserTypes } from "@/types/user";
