@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Grid2x2, ShoppingBasket, ShoppingCart } from "lucide-react";
+import { Grid2x2, LogOut, ShoppingBasket, ShoppingCart } from "lucide-react";
+import { logOutAction } from "@/app/dashboard/actions/auth";
 
 const CardComponent = () => {
   return (
@@ -39,6 +40,16 @@ const CardComponent = () => {
             <p className="text-sm font-bold">Categorias</p>
           </Link>
         </Button>
+
+        <form action={logOutAction} className="mt-10">
+          <Button
+            type="submit"
+            className="flex w-full items-start justify-start "
+          >
+            <LogOut className="w-5 h-5" />
+            Sair
+          </Button>
+        </form>
       </CardContent>
     </Card>
   );
