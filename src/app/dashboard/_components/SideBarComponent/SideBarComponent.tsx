@@ -64,7 +64,7 @@ const SideBarComponent = ({ userName }: SideBarProps) => {
         })}
       </nav>
 
-      <div className="border-t border-app-border p-4 mt-148">
+      <div className="border-t border-app-border p-4 mt-140">
         <form action={logOutAction}>
           <Button
             type="submit"
