@@ -23,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className}  antialiased`}>
-        <HeaderComponent />
+        <div className="block md:hidden">
+          <HeaderComponent />
+        </div>
         {children}
       </body>
     </html>
