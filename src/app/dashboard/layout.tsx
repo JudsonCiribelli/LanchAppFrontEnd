@@ -1,5 +1,6 @@
 import { requiredAdmin } from "@/lib/authToken";
 import React from "react";
+import SideBarComponent from "./_components/SideBarComponent/SideBarComponent";
 
 export default async function DashboardLayout({
   children,
@@ -8,5 +9,10 @@ export default async function DashboardLayout({
 }) {
   const user = await requiredAdmin();
 
-  return <div>{children}</div>;
+  return (
+    <div className="flex h-screen overflow-hidden text-white">
+      <SideBarComponent userName={user.name} />
+      {children}
+    </div>
+  );
 }
