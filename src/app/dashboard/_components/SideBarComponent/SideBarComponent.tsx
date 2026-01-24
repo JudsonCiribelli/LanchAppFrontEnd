@@ -9,7 +9,9 @@ import { logOutAction } from "../../actions/auth";
 
 interface SideBarProps {
   userName: string;
+  userId: string;
 }
+
 const menuItems = [
   {
     title: "Pedidos",
@@ -28,10 +30,10 @@ const menuItems = [
   },
 ];
 
-const SideBarComponent = ({ userName }: SideBarProps) => {
+const SideBarComponent = ({ userName, userId }: SideBarProps) => {
   const pathName = usePathname();
   return (
-    <aside className="hidden lg:block h-screen w-74 border-r border-app-border bg-app-sidebar">
+    <aside className="hidden lg:block h-screen w-76 border-r border-app-border bg-app-sidebar">
       <div className="p-6">
         <Button asChild variant="secondary">
           <Link href="/dashboard">
@@ -40,7 +42,7 @@ const SideBarComponent = ({ userName }: SideBarProps) => {
             </h1>
           </Link>
         </Button>
-        <p className="font-normal text-white text-sm mt-1.5">Olá, {userName}</p>
+        <p className="font-normal text-white text-xs mt-1.5">Olá, {userName}</p>
       </div>
       <Separator />
 
@@ -65,6 +67,12 @@ const SideBarComponent = ({ userName }: SideBarProps) => {
       </nav>
 
       <div className="border-t border-app-border p-4 mt-140">
+        <Button
+          asChild
+          className="w-full justify-start gap-3 text-white cursor-pointer"
+        >
+          <Link href={`/user/${userId}`}>Ver perfil</Link>
+        </Button>
         <form action={logOutAction}>
           <Button
             type="submit"
