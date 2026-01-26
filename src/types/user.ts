@@ -1,3 +1,5 @@
+import { AddressesType } from "./address";
+
 export interface UserTypes {
   id: string;
   name: string;
@@ -6,6 +8,6 @@ export interface UserTypes {
   role: string;
   createdAt: string;
   updatedAt: string;
-  addresses: string[];
+  addresses: AddressesType[];
   orders: string[];
 }
