@@ -1,11 +1,17 @@
 "use client";
-import { cn } from "@/lib/utils";
-import { Button } from "@/_components/ui/button";
-import { Separator } from "@/_components/ui/separator";
-import { Grid2x2, LogOut, ShoppingBasket, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logOutAction } from "../../actions/auth";
+import { cn } from "@/lib/utils";
+import { Button } from "@/_components/ui/button";
+import { Separator } from "@/_components/ui/separator";
+import {
+  Grid2x2,
+  LogOut,
+  ShoppingBasket,
+  ShoppingCart,
+  User,
+} from "lucide-react";
 
 interface SideBarProps {
   userName: string;
@@ -32,6 +38,7 @@ const menuItems = [
 
 const SideBarComponent = ({ userName, userId }: SideBarProps) => {
   const pathName = usePathname();
+
   return (
     <aside className="hidden lg:block h-screen w-76 border-r border-app-border bg-app-sidebar">
       <div className="p-6">
@@ -64,15 +71,18 @@ const SideBarComponent = ({ userName, userId }: SideBarProps) => {
             </Link>
           );
         })}
+        <Button
+          asChild
+          className="w-full justify-start gap-3 text-white cursor-pointer bg-brand-primary hover:bg-brand-primary"
+        >
+          <Link href={`/user/${userId}`}>
+            <User size={22} />
+            Ver perfil
+          </Link>
+        </Button>
       </nav>
 
       <div className="border-t border-app-border p-4 mt-140">
-        <Button
-          asChild
-          className="w-full justify-start gap-3 text-white cursor-pointer"
-        >
-          <Link href={`/user/${userId}`}>Ver perfil</Link>
-        </Button>
         <form action={logOutAction}>
           <Button
             type="submit"
