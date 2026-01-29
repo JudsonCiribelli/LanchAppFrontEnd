@@ -3,6 +3,7 @@ import z from "zod";
 import { AddressesFormSchema } from "../schemas/schema";
 import { apiClient } from "@/lib/api";
 import { RegisterAddresses } from "../types/RegisterAddresses";
+import { getToken } from "@/lib/authToken";
 
 export type FormState = {
   success: boolean;
@@ -29,6 +30,10 @@ export async function AddressesRegisterAction(
   }
 
   try {
+    const token = await getToken();
+    if (!token) {
+      return { success: false, message: "Você precisa estar logado." };
+    }
     const data = {
       street: validatedFields.data.street,
       number: validatedFields.data.number,
@@ -42,6 +47,7 @@ export async function AddressesRegisterAction(
     await apiClient<RegisterAddresses>("/user/address", {
       method: "POST",
       body: JSON.stringify(data),
+      token: token,
     });
 
     return {
