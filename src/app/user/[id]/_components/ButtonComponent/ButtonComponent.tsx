@@ -9,7 +9,10 @@ const ButtonComponent = () => {
   };
 
   return (
-    <Button className="bg-white text-black" onClick={handleRouterUser}>
+    <Button
+      className="bg-white text-black cursor-pointer hover:bg-white"
+      onClick={handleRouterUser}
+    >
       <ArrowLeft size={22} />
     </Button>
   );

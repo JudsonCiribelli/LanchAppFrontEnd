@@ -26,7 +26,7 @@ const AddressesCardComponent = ({ user }: AddressesCardProps) => {
 
   return (
     <>
-      <Card className="mx-2 mb-4">
+      <Card className="mx-2 mb-4 xl:w-120">
         <CardContent className="flex flex-col space-y-1">
           <h1 className="mb-2 font-semibold text-xl">Cartão de ID</h1>
           <p className="text-sm font-semibold">
@@ -41,7 +41,7 @@ const AddressesCardComponent = ({ user }: AddressesCardProps) => {
           </p>
         </CardContent>
       </Card>
-      <Card className="mx-2 my-1 mb-4">
+      <Card className="mx-2  mb-4 xl:w-120">
         <CardContent className="flex flex-col space-y-1">
           <h1 className="mb-2 font-semibold text-xl">Status</h1>
           <p className="text-sm font-semibold">
@@ -52,7 +52,7 @@ const AddressesCardComponent = ({ user }: AddressesCardProps) => {
           </p>
         </CardContent>
       </Card>
-      <Card className="mx-2 mb-4">
+      <Card className="mx-2 mb-4 xl:w-120">
         <CardContent className="flex flex-col space-y-1">
           <div className="flex items-center justify-between">
             <h1 className="mb-2 font-semibold text-xl">Endereços</h1>
