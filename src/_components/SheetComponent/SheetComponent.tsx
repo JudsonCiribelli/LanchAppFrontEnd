@@ -49,7 +49,7 @@ const SheetComponent = ({ user }: SheetsProps) => {
             )}
           </div>
 
-          <CardComponent />
+          <CardComponent userId={user.id} />
         </SheetHeader>
       </SheetContent>
     </Sheet>

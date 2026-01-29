@@ -1,10 +1,19 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Grid2x2, LogOut, ShoppingBasket, ShoppingCart } from "lucide-react";
+import {
+  Grid2x2,
+  LogOut,
+  ShoppingBasket,
+  ShoppingCart,
+  User,
+} from "lucide-react";
 import { logOutAction } from "@/app/dashboard/actions/auth";
 
-const CardComponent = () => {
+interface CardComponentProps {
+  userId?: string;
+}
+const CardComponent = ({ userId }: CardComponentProps) => {
   return (
     <Card className="border-app-border">
       <CardHeader>
@@ -38,6 +47,16 @@ const CardComponent = () => {
           <Link href="/dashboard/categories">
             <Grid2x2 size={24} />
             <p className="text-sm font-bold">Categorias</p>
+          </Link>
+        </Button>
+
+        <Button
+          className="flex items-start justify-start bg-brand-primary"
+          asChild
+        >
+          <Link href={`/user/${userId}`}>
+            <User size={24} />
+            <p className="text-sm font-bold">Ver Perfil</p>
           </Link>
         </Button>
 
