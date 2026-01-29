@@ -1,15 +1,29 @@
+"use client";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/_components/ui/button";
 import { Card, CardContent } from "@/_components/ui/card";
 import { Dialog, DialogTrigger } from "@/_components/ui/dialog";
 import { UserTypes } from "@/types/user";
 import { House } from "lucide-react";
 import AddressesFormComponent from "../AddressesFormComponent/AddressesFormComponent";
+import { DeleteUserAddress } from "../../actions/auth";
 
 interface AddressesCardProps {
   user: UserTypes;
 }
 
 const AddressesCardComponent = ({ user }: AddressesCardProps) => {
+  const [isDeleting, startTransition] = useTransition();
+  const router = useRouter();
+  const handleDeleteAddress = (id: String) => {
+    startTransition(async () => {
+      await DeleteUserAddress(id);
+
+      router.refresh();
+    });
+  };
+
   return (
     <>
       <Card className="mx-2 mb-4">
@@ -70,7 +84,12 @@ const AddressesCardComponent = ({ user }: AddressesCardProps) => {
                     </span>
                   </div>
 
-                  <Button className="mt-2 p-5 w-full" variant="destructive">
+                  <Button
+                    className="mt-2 p-5 w-full"
+                    variant="destructive"
+                    disabled={isDeleting}
+                    onClick={() => handleDeleteAddress(address.id)}
+                  >
                     Deletar
                   </Button>
                 </CardContent>
