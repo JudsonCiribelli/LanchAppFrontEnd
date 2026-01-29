@@ -64,6 +64,39 @@ export async function AddressesRegisterAction(
 
     return {
       success: false,
+      message: "Erro ao cadastrar endereço!",
+    };
+  }
+}
+
+export async function DeleteUserAddress(addressId: String) {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      return { success: false, message: "Você precisa estar logado." };
+    }
+
+    await apiClient("/user/address", {
+      method: "DELETE",
+      body: JSON.stringify({ addressId }),
+      token: token,
+    });
+
+    return {
+      success: true,
+      message: "Endereço deletado com sucesso!",
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
+
+    return {
+      success: false,
       message: "Erro ao criar conta!",
     };
   }
