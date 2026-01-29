@@ -3,7 +3,8 @@ import z from "zod";
 import { AddressesFormSchema } from "../schemas/schema";
 import { apiClient } from "@/lib/api";
 import { RegisterAddresses } from "../types/RegisterAddresses";
-import { getToken } from "@/lib/authToken";
+import { getToken, getUser } from "@/lib/authToken";
+import { revalidatePath } from "next/cache";
 
 export type FormState = {
   success: boolean;
@@ -19,6 +20,7 @@ export async function AddressesRegisterAction(
   formData: FormData,
 ) {
   const rawData = Object.fromEntries(formData);
+
   const validatedFields = AddressesFormSchema.safeParse(rawData);
 
   if (!validatedFields.success) {
@@ -31,6 +33,7 @@ export async function AddressesRegisterAction(
 
   try {
     const token = await getToken();
+    const user = await getUser();
     if (!token) {
       return { success: false, message: "Você precisa estar logado." };
     }
@@ -49,6 +52,7 @@ export async function AddressesRegisterAction(
       body: JSON.stringify(data),
       token: token,
     });
+    revalidatePath(`/user/${user?.id}`);
 
     return {
       success: true,
@@ -72,6 +76,7 @@ export async function AddressesRegisterAction(
 export async function DeleteUserAddress(addressId: String) {
   try {
     const token = await getToken();
+    const user = await getUser();
 
     if (!token) {
       return { success: false, message: "Você precisa estar logado." };
@@ -83,6 +88,7 @@ export async function DeleteUserAddress(addressId: String) {
       token: token,
     });
 
+    revalidatePath(`/user/${user?.id}`);
     return {
       success: true,
       message: "Endereço deletado com sucesso!",
