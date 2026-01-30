@@ -12,7 +12,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex h-screen overflow-hidden text-white">
       <SideBarComponent userName={user.name} userId={user.id} />
-      <main className="bg-app-background w-full">{children}</main>
+      <main className="bg-app-background w-full p-4 xl:p-10">{children}</main>
     </div>
   );
 }
