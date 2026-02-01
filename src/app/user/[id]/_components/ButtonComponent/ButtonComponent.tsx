@@ -1,19 +1,22 @@
 "use client";
-import { redirect } from "next/navigation";
+
 import { Button } from "@/_components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { MoveLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const ButtonComponent = () => {
-  const handleRouterUser = () => {
-    redirect("/dashboard");
+  const router = useRouter();
+
+  const handleRedirectUser = () => {
+    router.back();
   };
 
   return (
     <Button
-      className="bg-white text-black cursor-pointer hover:bg-white"
-      onClick={handleRouterUser}
+      onClick={handleRedirectUser}
+      className="cursor-pointer bg-white text-black hover:bg-white"
     >
-      <ArrowLeft size={22} />
+      <MoveLeft size={22} />
     </Button>
   );
 };
