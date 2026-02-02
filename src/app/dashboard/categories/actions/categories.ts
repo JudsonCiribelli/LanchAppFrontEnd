@@ -5,6 +5,21 @@ import { getToken } from "@/lib/authToken";
 import { CategoryTypes } from "@/types/category";
 import { revalidatePath } from "next/cache";
 
+export async function getCategories() {
+  try {
+    const token = await getToken();
+
+    const data = await apiClient<CategoryTypes[]>("/category", {
+      method: "GET",
+      token: token,
+    });
+
+    return data;
+  } catch (error) {
+    throw new Error("Error ao buscar categorias");
+  }
+}
+
 export async function createCategoryAction(formData: FormData) {
   try {
     const token = await getToken();
