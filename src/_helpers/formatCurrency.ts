@@ -1,4 +1,4 @@
-const formatToBrl = (value: string) => {
+export const formatToBrl = (value: string) => {
   const numbers = value.replace(/\D/g, "");
 
   if (!numbers) {
@@ -12,4 +12,8 @@ const formatToBrl = (value: string) => {
   });
 };
 
-export { formatToBrl };
+export const parseCurrencyToNumber = (value: string): number => {
+  const normalized = value.replace(/[^\d,]/g, "").replace(",", ".");
+
+  return parseFloat(normalized) || 0;
+};
