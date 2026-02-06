@@ -2,12 +2,11 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/_components/ui/button";
-import { Card, CardContent } from "@/_components/ui/card";
-import { Dialog, DialogTrigger } from "@/_components/ui/dialog";
 import { UserTypes } from "@/types/user";
-import { House } from "lucide-react";
+import { House, MapPin, Pencil, Trash } from "lucide-react";
 import AddressesFormComponent from "../AddressesFormComponent/AddressesFormComponent";
-import { DeleteUserAddress } from "../../actions/auth";
+import { DeleteUserAddress } from "../../actions/user";
+import { Separator } from "@/_components/ui/separator";
 
 interface AddressesCardProps {
   user: UserTypes;
@@ -15,7 +14,9 @@ interface AddressesCardProps {
 
 const AddressesCardComponent = ({ user }: AddressesCardProps) => {
   const [isDeleting, startTransition] = useTransition();
+
   const router = useRouter();
+
   const handleDeleteAddress = (id: String) => {
     startTransition(async () => {
       await DeleteUserAddress(id);
@@ -25,81 +26,64 @@ const AddressesCardComponent = ({ user }: AddressesCardProps) => {
   };
 
   return (
-    <>
-      <Card className="mx-2 mb-4 xl:w-120">
-        <CardContent className="flex flex-col space-y-1">
-          <h1 className="mb-2 font-semibold text-xl">Cartão de ID</h1>
-          <p className="text-sm font-semibold">
-            [Nome] <span className="font-normal">{user?.name}</span>
-          </p>
-          <p className="text-sm font-semibold">
-            [Cargo] <span className="font-normal">{user?.role}</span>
-          </p>
-          <p className="text-sm font-semibold">
-            [Membro desde]{" "}
-            <span className="font-normal">{user?.createdAt}</span>
-          </p>
-        </CardContent>
-      </Card>
-      <Card className="mx-2  mb-4 xl:w-120">
-        <CardContent className="flex flex-col space-y-1">
-          <h1 className="mb-2 font-semibold text-xl">Status</h1>
-          <p className="text-sm font-semibold">
-            [Email] <span className="font-normal">{user?.email}</span>
-          </p>
-          <p className="text-sm font-semibold">
-            [Telefone] <span className="font-normal">{user?.phone}</span>
-          </p>
-        </CardContent>
-      </Card>
-      <Card className="mx-2 mb-4 xl:w-120">
-        <CardContent className="flex flex-col space-y-1">
-          <div className="flex items-center justify-between">
-            <h1 className="mb-2 font-semibold text-xl">Endereços</h1>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>Cadastrar</Button>
-              </DialogTrigger>
-              <AddressesFormComponent />
-            </Dialog>
-          </div>
-          {user?.addresses.length === 0 ? (
-            <p>Nenhum endereço cadastrado</p>
-          ) : (
-            user?.addresses.map((address, index) => (
-              <Card key={index} className="my-2 mb-2">
-                <CardContent className="flex flex-col items-center">
-                  <div className="flex flex-col  gap-1">
-                    <div className="flex items-center gap-2">
-                      <House size={22} />
-                      <p className="text-sm font-semibold">
-                        Endereço principal
-                      </p>
-                    </div>
-                    <p className="font-normal text-lg">
-                      {address.street}, {address.number}, {address.city}
-                    </p>
-                    <span className="text-lg">
-                      {address.neighborhood}, {address.zipCode}
+    <div className="col-span-1 md:col-span-2 space-y-6">
+      <section className="bg-slate-900 rounded-2xl p-6 border border-slate-800 shadow-lg">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            <MapPin className="text-blue-500" /> Meus Endereços
+          </h3>
+          <AddressesFormComponent />
+        </div>
+        <div className="mb-4">
+          <Separator />
+        </div>
+
+        <div className="space-y-4">
+          {user.addresses.map((addr) => (
+            <div
+              key={user.id}
+              className="group relative bg-slate-950/50 hover:bg-slate-800/50 p-5 rounded-xl border border-slate-800 hover:border-blue-500/30 transition-all"
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <House size={18} />
+                    <span className="font-semibold text-white text-lg">
+                      Casa
                     </span>
                   </div>
+                  <p className="text-slate-400">
+                    {addr.street}, {addr.neighborhood}
+                  </p>
+                  <p className="text-slate-500 text-sm">
+                    {addr.city} - CEP: {addr.zipCode}
+                  </p>
+                </div>
 
+                <div className="flex flex-col  items-center gap-2 text-blue-400">
                   <Button
-                    className="mt-2 p-5 w-full"
-                    variant="destructive"
-                    disabled={isDeleting}
-                    onClick={() => handleDeleteAddress(address.id)}
+                    onClick={() => handleDeleteAddress(addr.id)}
+                    variant="ghost"
+                    className="flex items-center gap-1 text-red-400 text-sm cursor-pointer hover:underline"
                   >
+                    <Trash size={18} />
                     Deletar
                   </Button>
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </CardContent>
-      </Card>
-      s
-    </>
+
+                  <Button
+                    variant="ghost"
+                    className="flex items-center gap-1 text-blue-400 text-sm cursor-pointer hover:underline"
+                  >
+                    <Pencil size={18} />
+                    Editar
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 };
 
