@@ -38,7 +38,7 @@ const AccessDeniedPage = async () => {
 
           <form action={logOutAction} className="flex justify-center pt-2">
             <Button
-              className="flex items-center gap-2 cursor-pointer"
+              className="flex items-center gap-2 cursor-pointer w-full"
               type="submit"
               variant="destructive"
             >
