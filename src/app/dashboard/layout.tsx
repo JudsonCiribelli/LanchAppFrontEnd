@@ -1,4 +1,4 @@
-import { getUser, requiredAdmin } from "@/lib/authToken";
+import { requiredAdmin } from "@/lib/authToken";
 import React from "react";
 import SideBarComponent from "./_components/SideBarComponent/SideBarComponent";
 
@@ -12,7 +12,9 @@ export default async function DashboardLayout({
   return (
     <div className="flex h-screen overflow-hidden text-white">
       <SideBarComponent userName={user.name} userId={user.id} />
-      <main className="bg-app-background w-full p-4 xl:p-10">{children}</main>
+      <main className="flex-1 bg-app-background w-full p-4 overflow-y-auto scrollbar-custom xl:p-10">
+        <div className="container max-w-full px-4 py-6">{children}</div>
+      </main>
     </div>
   );
 }
