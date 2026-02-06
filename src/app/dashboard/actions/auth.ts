@@ -1,3 +1,4 @@
+"use server";
 import { deleteToken } from "@/lib/authToken";
 import { redirect } from "next/navigation";
 
