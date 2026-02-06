@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import { AddressesFormSchema, AddressesFormType } from "../../schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/_components/ui/input";
-import { AddressesRegisterAction } from "../../actions/auth";
+import { AddressesRegisterAction } from "../../actions/user";
 import { Loader2, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 
