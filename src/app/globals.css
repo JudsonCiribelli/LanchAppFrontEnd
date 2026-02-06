@@ -121,6 +121,30 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: var(--color-app-background);
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background: var(--color-app-border);
+    border-radius: 10px;
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brand-primary);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
