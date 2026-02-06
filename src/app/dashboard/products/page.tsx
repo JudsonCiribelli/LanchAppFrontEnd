@@ -12,7 +12,6 @@ import {
 } from "@/_components/ui/card";
 import Image from "next/image";
 import { Package } from "lucide-react";
-import { Button } from "@/_components/ui/button";
 import DeleteButton from "./_components/DeleteButtonComponent/DeleteButtonComponent";
 
 const ProductPage = async () => {
@@ -25,7 +24,7 @@ const ProductPage = async () => {
   const productsList = Array.isArray(products) ? products : [];
 
   return (
-    <div className="space-y-5 xl:p-4">
+    <div className="space-y-5  xl:p-4">
       <div className="flex items-center justify-between ">
         <div className="flex flex-col gap-1">
           <h1 className="text-2xl font-semibold">Produtos</h1>
