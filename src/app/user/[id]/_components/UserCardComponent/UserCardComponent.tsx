@@ -1,15 +1,70 @@
+"use client";
+import { useState } from "react";
 import { Button } from "@/_components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/_components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/_components/ui/form";
 import { formatDate } from "@/_helpers/formatDate";
 import { formatPhone } from "@/_helpers/formatPhone";
 import { getInitials } from "@/_helpers/getInitials";
 import { UserTypes } from "@/types/user";
-import { Calendar, Edit3, Mail, Phone, ShieldCheck } from "lucide-react";
+import {
+  Calendar,
+  Edit3,
+  Loader2,
+  Mail,
+  Phone,
+  ShieldCheck,
+  User,
+} from "lucide-react";
+import { useForm } from "react-hook-form";
+import { UpdateProfileSchema, UpdateSchemaType } from "../../schemas/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/_components/ui/input";
+import { UpdateUserProfileAction } from "../../actions/user";
 
 interface UserCardProps {
   user: UserTypes;
 }
 
 const UserCardComponent = ({ user }: UserCardProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const form = useForm<UpdateSchemaType>({
+    resolver: zodResolver(UpdateProfileSchema),
+    defaultValues: {
+      newName: user.name,
+      newEmail: user.email,
+      newPhone: user.phone,
+    },
+  });
+
+  const handleEditUser = async (data: UpdateSchemaType) => {
+    setIsOpen(true);
+
+    const result = await UpdateUserProfileAction(user.id, data);
+
+    if (result.success) {
+      setIsOpen(false);
+      form.reset();
+      alert(result.message);
+    } else {
+      alert(result.message);
+    }
+  };
+
+  const handleSubmit = async (data: UpdateSchemaType) => {};
   return (
     <section className="col-span-1 bg-slate-900 rounded-2xl p-8 border border-slate-800 shadow-xl flex flex-col items-center text-center h-fit">
       <div className="relative mb-6">
@@ -30,6 +85,15 @@ const UserCardComponent = ({ user }: UserCardProps) => {
 
       {/* DADOS DO USUARIO */}
       <div className="w-full space-y-4 text-left bg-slate-950/50 p-5 rounded-xl border border-slate-800">
+        {/* NAME*/}
+        <div className="flex items-center gap-3 text-slate-400">
+          <User size={18} className="text-blue-500" />
+          <div className="overflow-hidden">
+            <p className="text-sm text-slate-200 truncate" title={user.name}>
+              {user.name}
+            </p>
+          </div>
+        </div>
         {/* EMAIL */}
         <div className="flex items-center gap-3 text-slate-400">
           <Mail size={18} className="text-blue-500" />
@@ -62,9 +126,91 @@ const UserCardComponent = ({ user }: UserCardProps) => {
         </div>
       </div>
 
-      <button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-all shadow-lg shadow-blue-900/20">
-        Editar Perfil
-      </button>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>
+          <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-all shadow-lg shadow-blue-900/20">
+            Editar Perfil
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Editar perfil de Usuário</DialogTitle>
+          </DialogHeader>
+          {/* FORMULÁRIO */}
+          <Form {...form}>
+            <form
+              className="space-y-4"
+              onSubmit={form.handleSubmit(handleEditUser)}
+            >
+              <FormField
+                control={form.control}
+                name="newEmail"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome</FormLabel>
+                    <FormControl>
+                      <Input placeholder={user.name} type="email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="newName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder={user.email} type="name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="newPhone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Celular</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={formatPhone(user.phone)}
+                        type="tel"
+                        {...field}
+                        onChange={(e) => {
+                          const formatted = formatPhone(e.target.value);
+                          field.onChange(formatted);
+                        }}
+                        maxLength={15}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                disabled={form.formState.isSubmitting}
+                className="w-full bg-blue-600 cursor-pointer hover:bg-blue-600"
+                type="submit"
+              >
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Salvando...
+                  </>
+                ) : (
+                  "Salvar"
+                )}
+              </Button>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
