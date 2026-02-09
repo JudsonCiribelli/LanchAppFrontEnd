@@ -33,3 +33,19 @@ export const UpdatedAddressesSchema = z.object({
 });
 
 export type UpdatedAddressesType = z.infer<typeof UpdatedAddressesSchema>;
+
+export const UpdateProfileSchema = z.object({
+  newEmail: z.email().nonempty({ message: "Email é obrigatório" }),
+  newName: z.string().nonempty({ message: "Nome é obrigatório" }),
+  newPhone: z
+    .string()
+    .transform((val) => val.replace(/\D/g, ""))
+    .refine((val) => val.length === 11, {
+      message: "O número de telefone deve ter 11 dígitos. (DDD + 9xxxx-xxxx).",
+    })
+    .refine((val) => /^[1-9]{2}9[0-9]{8}$/.test(val), {
+      message: "Número de telefone inválido.",
+    }),
+});
+
+export type UpdateSchemaType = z.infer<typeof UpdateProfileSchema>;
