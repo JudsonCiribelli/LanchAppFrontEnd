@@ -24,6 +24,7 @@ import { Input } from "@/_components/ui/input";
 import { AddressesRegisterAction } from "../../actions/user";
 import { Loader2, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const AddressesFormComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,6 +49,7 @@ const AddressesFormComponent = () => {
 
   useEffect(() => {
     if (state.success) {
+      toast.success("Endereço cadastrada com sucesso!");
       form.reset();
       setIsOpen(false);
     }

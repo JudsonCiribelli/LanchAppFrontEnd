@@ -30,6 +30,7 @@ import {
 } from "../../schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/_components/ui/input";
+import { toast } from "sonner";
 
 interface AddressesCardProps {
   user: UserTypes;
@@ -59,7 +60,7 @@ const AddressesCardComponent = ({ user }: AddressesCardProps) => {
   const handleDeleteAddress = (id: String) => {
     startTransition(async () => {
       await DeleteUserAddress(id);
-
+      toast.success("Endereço deletado com sucesso!");
       router.refresh();
     });
   };
@@ -87,11 +88,12 @@ const AddressesCardComponent = ({ user }: AddressesCardProps) => {
 
     if (result.success) {
       setIsOpen(false);
+      toast.success("Endereço atualizado com sucesso!");
       setSelectedAddressId(null);
       form.reset();
       router.refresh();
     } else {
-      alert(result.message);
+      toast.error(result.message);
     }
   };
 
@@ -111,7 +113,7 @@ const AddressesCardComponent = ({ user }: AddressesCardProps) => {
         <div className="space-y-4">
           {user.addresses.map((addr) => (
             <div
-              key={user.id}
+              key={addr.id}
               className="group relative bg-slate-950/50 hover:bg-slate-800/50 p-5 rounded-xl border border-slate-800 hover:border-blue-500/30 transition-all"
             >
               <div className="flex justify-between items-start">
