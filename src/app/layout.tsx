@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import HeaderComponent from "@/_components/HeaderComponent/HeaderComponent";
+import { Toaster } from "@/_components/ui/sonner";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -27,6 +28,7 @@ export default function RootLayout({
           <HeaderComponent />
         </div>
         {children}
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );
