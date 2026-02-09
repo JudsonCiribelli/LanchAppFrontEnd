@@ -1,6 +1,10 @@
 "use server";
 import z from "zod";
-import { AddressesFormSchema, UpdatedAddressesType } from "../schemas/schema";
+import {
+  AddressesFormSchema,
+  UpdatedAddressesType,
+  UpdateSchemaType,
+} from "../schemas/schema";
 import { apiClient } from "@/lib/api";
 import { RegisterAddresses } from "../types/RegisterAddresses";
 import { getToken, getUser } from "@/lib/authToken";
@@ -132,6 +136,45 @@ export async function UpdatedAddressAction(
       success: true,
       message: "Endereço atualizado com sucesso!",
     };
+  } catch (error) {
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
+
+    return {
+      success: false,
+      message: "Erro ao atualizar endereço!",
+    };
+  }
+}
+
+export async function UpdateUserProfileAction(
+  userId: string,
+  data: UpdateSchemaType,
+) {
+  try {
+    const token = await getToken();
+    const user = await getUser();
+
+    if (!token) {
+      return { success: false, message: "Você precisa estar logado." };
+    }
+
+    if (!user) {
+      return { success: false, message: "Você precisa estar logado." };
+    }
+
+    await apiClient("/user/profile", {
+      method: "PUT",
+      token: token,
+      body: JSON.stringify({ userId, ...data }),
+    });
+
+    revalidatePath(`/user/${user?.id}`);
+    return { success: true, message: "Perfil atualizado com sucesso!" };
   } catch (error) {
     if (error instanceof Error) {
       return {
