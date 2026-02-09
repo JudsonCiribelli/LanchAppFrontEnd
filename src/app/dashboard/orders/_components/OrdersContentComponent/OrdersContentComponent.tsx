@@ -111,12 +111,9 @@ const OrdersContent = ({ token }: OrderContentProps) => {
                     {order.items && order.items.length > 0 && (
                       <div className="space-y-1">
                         {order.items.slice(0, 2).map((item) => (
-                          <div className="flex flex-col gap-6">
+                          <div className="flex flex-col gap-6" key={item.id}>
                             <div className="flex flex-col">
-                              <p
-                                key={item.id}
-                                className="text-xs text-muted-foreground truncate sm:text-sm"
-                              >
+                              <p className="text-xs text-muted-foreground truncate sm:text-sm">
                                 {item.amount}x {item.product.name} -{" "}
                                 {item.product.price}
                               </p>
