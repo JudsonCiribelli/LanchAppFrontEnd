@@ -1,9 +1,16 @@
-import { Card, CardHeader, CardTitle } from "@/_components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/_components/ui/card";
 import { apiClient } from "@/lib/api";
 import { getToken } from "@/lib/authToken";
 import { CategoryTypes } from "@/types/category";
 import { Tags } from "lucide-react";
 import CategoryFormComponent from "./_components/CategoryFormComponent/CategoryFormComponent";
+import { Badge } from "@/_components/ui/badge";
 
 const CategoriesPage = async () => {
   const token = await getToken();
@@ -33,14 +40,28 @@ const CategoriesPage = async () => {
               className="bg-app-card border-app-border transition-shadow text-white hover:shadow-md"
             >
               <CardHeader>
-                <CardTitle className="flex gap-2 items-center text-base xl:text-xl">
+                <CardTitle className="flex gap-2 items-center text-base xl:text-lg">
                   <Tags size={22} />
                   <span>{category.name}</span>
                 </CardTitle>
-                <p className="text-xs text-muted-foreground xl:text-sm">
-                  ID:{category.id}
-                </p>
               </CardHeader>
+              <CardContent className="flex flex-col gap-2">
+                {category.products?.map((product) => (
+                  <div key={product.id}>
+                    <Badge variant="secondary">
+                      {product.name} -{" "}
+                      <span className="text-brand-primary font-bold">
+                        {product.price}
+                      </span>
+                    </Badge>
+                  </div>
+                ))}
+              </CardContent>
+              <CardFooter>
+                <Badge className="text-xs text-white xl:text-sm">
+                  ID: {category.id}
+                </Badge>
+              </CardFooter>
             </Card>
           ))}
         </div>
