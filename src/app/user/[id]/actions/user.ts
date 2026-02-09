@@ -1,6 +1,6 @@
 "use server";
 import z from "zod";
-import { AddressesFormSchema } from "../schemas/schema";
+import { AddressesFormSchema, UpdatedAddressesType } from "../schemas/schema";
 import { apiClient } from "@/lib/api";
 import { RegisterAddresses } from "../types/RegisterAddresses";
 import { getToken, getUser } from "@/lib/authToken";
@@ -103,7 +103,46 @@ export async function DeleteUserAddress(addressId: String) {
 
     return {
       success: false,
-      message: "Erro ao criar conta!",
+      message: "Erro ao deletar endereço!",
+    };
+  }
+}
+
+export async function UpdatedAddressAction(
+  addressId: string,
+  data: UpdatedAddressesType,
+) {
+  try {
+    const token = await getToken();
+    const user = await getUser();
+
+    if (!token) {
+      return { success: false, message: "Você precisa estar logado." };
+    }
+
+    await apiClient("/user/address", {
+      method: "PUT",
+      token: token,
+      body: JSON.stringify({ addressId, ...data }),
+    });
+
+    revalidatePath(`/user/${user?.id}`);
+
+    return {
+      success: true,
+      message: "Endereço atualizado com sucesso!",
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
+
+    return {
+      success: false,
+      message: "Erro ao atualizar endereço!",
     };
   }
 }
