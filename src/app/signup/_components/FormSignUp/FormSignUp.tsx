@@ -24,6 +24,7 @@ import Link from "next/link";
 import { signUpAction } from "../../actions/auth";
 import { SignUpSchema, SignUpSchemaType } from "../../schemas/schema";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const FormSignUp = () => {
   const router = useRouter();
@@ -39,6 +40,7 @@ const FormSignUp = () => {
 
   useEffect(() => {
     if (state.success && state.redirectTo) {
+      toast.success("Conta criada com sucesso!");
       form.reset();
       router.replace(state.redirectTo);
     }
