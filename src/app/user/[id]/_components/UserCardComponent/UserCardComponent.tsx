@@ -34,6 +34,7 @@ import { UpdateProfileSchema, UpdateSchemaType } from "../../schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/_components/ui/input";
 import { UpdateUserProfileAction } from "../../actions/user";
+import { toast } from "sonner";
 
 interface UserCardProps {
   user: UserTypes;
@@ -57,10 +58,10 @@ const UserCardComponent = ({ user }: UserCardProps) => {
 
     if (result.success) {
       setIsOpen(false);
+      toast.success("Perfil atualizado com sucesso!");
       form.reset();
-      alert(result.message);
     } else {
-      alert(result.message);
+      toast.error(result.message);
     }
   };
 
