@@ -38,6 +38,7 @@ import {
 import { CategoryTypes } from "@/types/category";
 import { formatToBrl } from "@/_helpers/formatCurrency";
 import Image from "next/image";
+import { toast } from "sonner";
 
 interface ProductFormProps {
   categories: CategoryTypes[];
@@ -76,16 +77,17 @@ const ProductFormComponent = ({ categories }: ProductFormProps) => {
 
       if (result.success) {
         setIsOpen(false);
+        toast.success("Produto cadastrado com sucesso!");
         setSelectCategory("");
         setImagePreview(null);
         setImageFile(null);
         form.reset();
         router.refresh();
       } else {
-        alert(result.error);
+        toast.error(result.error);
       }
     } catch (error) {
-      alert("Ocorreu um erro inesperado.");
+      toast.message("Ocorreu um erro inesperado.");
     } finally {
       setIsLoading(false);
     }
