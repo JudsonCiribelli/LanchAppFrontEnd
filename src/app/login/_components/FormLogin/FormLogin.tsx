@@ -25,6 +25,7 @@ import { Loader2 } from "lucide-react";
 import { useActionState, useEffect } from "react";
 import { loginAction } from "../../actions/auth";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -41,6 +42,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (state.success && state.redirectTo) {
+      toast.success("Login realizado com sucesso!");
       form.reset();
       router.replace(state.redirectTo);
     }
