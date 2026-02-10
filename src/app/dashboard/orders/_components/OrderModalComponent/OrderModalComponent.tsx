@@ -15,6 +15,7 @@ import { statusConfig } from "@/lib/order-status";
 import { typeConfig } from "@/lib/order-type";
 import { OrderTypes } from "@/types/order";
 import { FinishOrderAction } from "../../actions/orders";
+import { toast } from "sonner";
 
 interface OrderModalProps {
   orderId: string | null;
@@ -70,6 +71,7 @@ const OrderModalComponent = ({ orderId, onClose, token }: OrderModalProps) => {
     }
 
     if (result.success) {
+      toast.success("Pedido finalizado com sucesso!");
       onClose();
       router.refresh();
     }
