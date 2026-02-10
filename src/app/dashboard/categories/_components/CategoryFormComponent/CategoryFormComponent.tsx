@@ -28,6 +28,7 @@ import { createCategoryAction } from "../../actions/categories";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const CategoryFormComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,9 +45,12 @@ const CategoryFormComponent = () => {
     const result = await createCategoryAction(formData);
 
     if (result.success) {
+      toast.success("Categoria cadastrada com sucesso!");
       form.reset();
       setIsOpen(false);
       router.refresh();
+    } else {
+      toast.error("Erro ao cadastrar categoria!");
     }
   };
 
